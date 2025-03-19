@@ -1,6 +1,5 @@
 *.log
 
 Compilation/onnx_models
-Compilation/partitioned_networks
 
 PyTorch/snn_models

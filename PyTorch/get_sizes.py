@@ -1,0 +1,38 @@
+import torch
+import numpy as np
+from AlexSNN import AlexSNN
+
+inputs = torch.tensor(np.random.rand(1, 3, 64, 64)).float().cuda()
+print(inputs.size())
+
+model = torch.load("./snn_models/alex_snn_2_part.pth")
+model.change_width_mult(1)
+
+y = model.conv1(inputs)
+print(f"Conv1: {y.size()}")
+y = model.MP1(y)
+print(f"MP1: {y.size()}")
+y = model.conv2(y)
+print(f"Conv2: {y.size()}")
+y = model.MP2(y)
+print(f"MP2: {y.size()}")
+y = model.conv3(y)
+print(f"Conv3: {y.size()}")
+y = model.conv4(y)
+print(f"Conv4: {y.size()}")
+y = model.conv5(y)
+print(f"Conv5: {y.size()}")
+y = model.MP3(y)
+print(f"MP3: {y.size()}")
+y = model.drop(y)
+print(f"Drop: {y.size()}")
+y = torch.flatten(y, 1)
+print(f"Flatten: {y.size()}")
+y = model.fc1(y)
+print(f"FC1: {y.size()}")
+y = model.drop(y)
+print(f"Drop: {y.size()}")
+y = model.fc2(y)
+print(f"FC2: {y.size()}")
+y = model.fc3(y)
+print(f"FC3: {y.size()}")
