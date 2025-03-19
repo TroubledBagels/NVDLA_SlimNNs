@@ -1,19 +1,12 @@
 import sys
-import os
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import onnx
 
-# from snn import SNN
-# from simple_onnx_cnn import CNN
-# from cifar10_linear import FNN
-# from simple_cnn import SimpleCNN
 from AlexSNN import AlexSNN
-# from AlexNet import AlexNet
 
-from onnx import version_converter, helper
+from onnx import version_converter
+
 
 def open_model(model_name: str) -> AlexSNN:
     return torch.load(f"./snn_models/{model_name}.pth")
