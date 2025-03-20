@@ -6,6 +6,13 @@ N.B. When cloning, for the full Runtime implementation, make sure you do a recur
 ````
 git submodule update --init --recursive
 ````
+## Quick "Good to Knows"
+1. To exit the NVDLA virtual platform, use ````Ctrl + A```` and then ```X```
+2. To exit any docker, just type ````exit```` or press ````Ctrl + D````
+3. To copy files into a docker, use ````docker cp <your_dir> <container_id>:<dir>```` (and vice versa)
+4. To list running dockers, use ````docker ps````
+5. To list all dockers, including the shutdown ones, ````docker ps -a````
+6. Don't move the Python files around much, there's quite a few relative paths
 
 ## Workflow
 ### Model Creation
@@ -161,7 +168,7 @@ After the successful install, you can compile the runtime. First navigate to the
 ````
 <your_path>/NVDLA_SlimNNs/Runtime/sw/umd
 ````
-Within here is an ````.sh```` file: ````compile_and_transfer.sh````. This file will compile the runtime and output the file into ````Runtime/runtime_outputs````. 
+Within here is a ````.sh```` file: ````compile_and_transfer.sh````. will compile the runtime and output the file into ````Runtime/runtime_outputs````. 
 
 Usage: ````./compile_and_transfer.sh [str: filename = nvdla_runtime]````
 
