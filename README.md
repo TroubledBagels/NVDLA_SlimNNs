@@ -115,4 +115,44 @@ To compile the runtime, you have two options.
 1. Set up an environment that will be able to perfectly execute the  code (long process - unrecommended)
 2. Use another Docker
 
-For the docker, I used the 16:04
+For the docker, I used the Ubuntu 16.04 docker. Then I needed to install the toolchain for ARM compilation.
+````
+docker run -it -v /home:/home ubuntu:16.04
+apt-get update
+apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu make -y
+````
+After the successful install, you can compile the runtime. First navigate to the following directory:
+````
+<your_path>/NVDLA_SlimNNs/Runtime/sw/umd
+````
+Within here is an ````.sh```` file: ````compile_and_transfer.sh````. This file will compile the runtime and output the file into ````Runtime/runtime_outputs````. 
+
+Usage: ````./compile_and_transfer.sh [str: filename = nvdla_runtime]````
+
+N.B. If you attempt to compile and transfer with the same name as one already in the destination directory, the original will be overwritten.
+
+#### Custom Runtimes - Execution
+Two runtimes (single and multi) are provided within the Runtime directory. These can be used and have their own help message in case of misuse. Included in the repository are also some scaled up (64x64) CIFAR10 images, for testing purposes.
+
+To execute a runtime, you should first copy the runtime into the VP docker, which can be done with the ````docker cp```` command above. After copying, you can run it just like the original NVDLA runtime that comes within the onnc/vp docker. Recommended execution is as follows:
+````
+./runtime --parts <int: parts> --loadable loadable1.nvdla \
+--loadable loadable2.nvdla --mean 0.4914,0.4822,0.4465 \
+--normalize 0.2470,0.2435,0.2616 --image image.jpg --rawdump
+````
+The arguments can be broken down as follows:
+
+- ````--parts````: the number of partitions the network consists of
+- ````--loadable````: the loadable files for each partition
+- ````--mean````: the mean values for each channel of the image - used for normalisation
+- ````--normalize````: the normalisation values for each channel of the image - used for normalisation
+- ````--image````: the image to be used for inference
+- ````--rawdump````: the output file will be human-readable
+
+If the image isn't the correct size you will get some strange errors. If the image is too small, it isn't catastrophic, but if it is too large, the runtime may crash (as C is so memory unsafe).
+
+## Testing and Verification
+### Functional Validation
+Functional validation was shown through a selection of 100 images, each from CIFAR10, scaled up to be the correct format for the AlexSNN network. These images were run through the network, and then through both the ONNX and PTH versions of the network too. The results were that the NVDLA network had an error rate in the degree of 10^-3, as compared to the other forms. As this is across hardware, and the floating point memory size of the NVDLA is 16-bit, this is an acceptable error. Raw data can be seen in my dissertation file. 
+### Performance
+Performance testing was difficult, and there is likely some inaccuracy due to the measurement methods. [Insert diss stuff]
