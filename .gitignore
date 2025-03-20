@@ -1,5 +1,7 @@
 *.log
 
+.idea
+
 Compilation/onnx_models
 Compilation/partitioned_networks
 
