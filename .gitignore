@@ -4,5 +4,6 @@
 
 Compilation/onnx_models
 Compilation/partitioned_networks
+Compilation/nvdla_models
 
 PyTorch/snn_models

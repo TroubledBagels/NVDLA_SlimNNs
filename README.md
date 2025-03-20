@@ -108,11 +108,47 @@ These are the only files that need name changes in the ````sw```` repository, ho
 - ````DlaImage.cpp```` has been changed for compatibility
 - ````DlaImageUtils.cpp```` has been changed for compatibility
 
-[Explanation about AppArgs, etc.]
+#### Custom Runtimes - Creation
+Couple things to help with this that I couldn't really find elsewhere and had to look for in the code.
+There are two main data structures within the runtime. 
+
+The first is ````TestAppArgs````. This structure contains the arguments of the runtime (which can be roughly equated to the UMD), and can be mostly ignored in my personal experience. 
+
+In the multi-UMD runtime, I instantiated multiple of these. It could likely have been done with a slightly smaller memory footprint had I created multiple, but with the current setup of the pre-existing functions within the runtime, it was simpler to keep it the same. Therefore, I created a vector of these, one for each UMD used.
+For future work, it may be worth condensing this vector into a single instance of the structure, to do so you would need to vectorise a couple of the stored variables, mainly ````loadableName````, and change the logic of the program to support it.
+
+In the single-UMD runtime, I edited the structure slightly, to contain a vector of loadable names, rather than just storing a single one and passing it along to functions like I had done previously (new_sw commit 8165ca7 and before). This reduced the file sizes slightly and also the memory footprint slightly.
+
+The second data structure is ````TestInfo````, and it is holds the information about the current "Test". Each test comprises loading the image, loading the loadable, creating input and output buffers, and then submitting the task to the accelerator.
+The structure of a basic runtime can be put into steps as follows:
+1. Parse (and validate) arguments
+2. Perform test setup:
+    - Check that the image path is valid (not necessarily correct, but valid)
+    - Do a little file work
+3. Create the runtime instance
+4. Read the loadable
+5. Load the loadable
+6. Initialise the emulator
+7. Run the test
+    - Validate runtime object
+    - Create the input and output buffers
+    - Submit the task
+    - Output the buffer
+8. Clean up
+
+My runtimes essentially follow this structure, with a slight difference as to when and where things are loaded. For example, the multi-UMD runtime loads all the loadables at once, then it starts running tests.
+If the test gets a confidence of less than a certain threshold, it will pass the test onto the next UMD, which has the next largest partition. This is repeated until the threshold is reached or there are no more UMDs, at which point the output happens.
+
+The key differences can be summed up as follows:
+
+- Single-UMD: Repeats steps 3-7 for each partition required
+- Multi-UMD: Repeats steps 3-5 for every partition, then repeats steps 6-7 for each test needed 
+
+Anything else can be reasonably easily inferred from code, and any comments I may have left in the code (but there's not a lot as it's remarkably self-explanatory).
 
 #### Custom Runtimes - Compilation
 To compile the runtime, you have two options.
-1. Set up an environment that will be able to perfectly execute the  code (long process - unrecommended)
+1. Set up an environment that will be able to perfectly compile the code with all outdated libraries being installed along with their dependencies and building the environment from the ground up (long process - not recommended)
 2. Use another Docker
 
 For the docker, I used the Ubuntu 16.04 docker. Then I needed to install the toolchain for ARM compilation.
