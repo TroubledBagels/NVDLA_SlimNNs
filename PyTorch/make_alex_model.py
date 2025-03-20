@@ -60,7 +60,12 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"[INFO] Using {device} device")
 
-    part = int(sys.argv[1])
+    if len(sys.argv) < 2:
+        print("No partition count selected, automatically selecting 2")
+        print("Usage: python3 make_alex_model.py <int: parts>")
+        part = 2
+    else:
+        part = int(sys.argv[1])
 
     model = AlexModel.AlexSNN(part).to(device)
 
