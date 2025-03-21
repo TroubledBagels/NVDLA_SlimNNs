@@ -6,4 +6,7 @@ Compilation/onnx_models
 Compilation/partitioned_networks
 Compilation/nvdla_models
 
+EMBER/FLARE-demo
+EMBER/FLARE-HDL
+
 PyTorch/snn_models

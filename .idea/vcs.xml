@@ -2,6 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/EMBER/FLARE-HDL" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/EMBER/FLARE-demo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/EMBER/FLARE-demo/NVDLA-FLARE" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Runtime/sw" vcs="Git" />
   </component>
 </project>
