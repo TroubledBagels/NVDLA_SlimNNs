@@ -1,6 +1,6 @@
 *.log
 
-.idea
+.idea/
 
 Compilation/onnx_models
 Compilation/partitioned_networks
