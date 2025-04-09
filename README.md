@@ -58,7 +58,7 @@ Usage: ````python3 pth_to_onnx.py <model_name>````
 As can be seen, there is no ONNC executable or related file within the repository. That is because, the most efficient way to compile a new model is through the docker.
 ````
 docker pull onnc/onnc-community
-docker run -ti --rm onnc/onnc-community /bin/bash
+docker run -it -v /home:/home onnc/onnc-community /bin/bash
 ````
 This will boot you into the onnc-community docker, and puts you into the correct directory. From there you can find the ONNC compiler in ````<insert path>/onnc````. You can then use this as follows (I recommend copying the model you want to compile into the ````/models```` directory from the root).
 ````
