@@ -39,12 +39,13 @@ class AlexSNN(nn.Module):
         print()
         print(self)
 
-    def forward(self, x, confidence_threshold: float = 0.9) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, confidence_threshold: float = 0.9) -> torch.Tensor:
         width_mult = self.width_mult_list[0]
+        original = x.clone()
 
         while True:
             self.change_width_mult(width_mult)
-
+            x = original
             x = self.conv1(x)
             x = self.MP1(x)
             x = self.conv2(x)
@@ -61,9 +62,9 @@ class AlexSNN(nn.Module):
             x = self.fc2(x)
             x = self.fc3(x)
 
-            norm_x = torch.norm(x, p=2, dim=0)
+            softmax_x = nn.Softmax(dim=1)(x)
 
-            confidence = torch.max(norm_x, 1)[0] - torch.topk(norm_x, 2)[0][:, 1].item()
+            confidence = torch.max(softmax_x, 1)[0] - torch.topk(softmax_x, 2)[0][:, 1].item()
             if confidence > confidence_threshold:
                 break
             elif width_mult == 1.0:

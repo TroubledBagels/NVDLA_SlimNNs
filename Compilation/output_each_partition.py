@@ -1,9 +1,9 @@
 from AlexSNN import AlexSNN
 import torch
 import sys
-import os
 import torch.nn as nn
 import onnx
+import os
 
 class StaticAlexSNN(nn.Module):
     def __init__(self, wm):
@@ -65,7 +65,7 @@ class StaticAlexSNN(nn.Module):
 
 def main(model_name: str):
     print(f"[OK] Loading model...")
-    model = torch.load(f"./snn_models/{model_name}.pth")
+    model = torch.load(f"../PyTorch/snn_models/{model_name}.pth")
 
     print(f"[OK] Calculating WML...")
     wml = []
@@ -116,5 +116,13 @@ def main(model_name: str):
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 output_each_partition.py <model_name>")
+        print("List models with -l")
         sys.exit(1)
+    if "-l" in sys.argv:
+        print("[INFO] Available models:")
+        # iterate through ../PyTorch/snn_models
+        for filename in os.listdir("../PyTorch/snn_models"):
+            if filename.endswith(".pth"):
+                print(f"    {filename[:-4]}")
+        exit(0)
     main(sys.argv[1])
