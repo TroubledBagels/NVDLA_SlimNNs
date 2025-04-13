@@ -1,0 +1,62 @@
+benjamin@benjamin-desktop:~/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo$ python3 lenet_demo.py 
+-I(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/scripts/utils.py): Loading MNIST dataset...
+/home/benjamin/.local/lib/python3.10/site-packages/torchvision/datasets/mnist.py:76: UserWarning: train_data has been renamed data
+  warnings.warn("train_data has been renamed data")
+/home/benjamin/.local/lib/python3.10/site-packages/torchvision/datasets/mnist.py:66: UserWarning: train_labels has been renamed targets
+  warnings.warn("train_labels has been renamed targets")
+/home/benjamin/.local/lib/python3.10/site-packages/torchvision/datasets/mnist.py:81: UserWarning: test_data has been renamed data
+  warnings.warn("test_data has been renamed data")
+/home/benjamin/.local/lib/python3.10/site-packages/torchvision/datasets/mnist.py:71: UserWarning: test_labels has been renamed targets
+  warnings.warn("test_labels has been renamed targets")
+-I(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/scripts/utils.py): MNIST loaded
+-I: Loading model...
+/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/lenet_demo.py:33: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  lenet.load_state_dict(torch.load(savefile))
+-I: Model loaded
+-I: printing loaded model:
+LeNet(
+  (conv1): Conv2d(1, 6, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+  (conv2): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))
+  (linear1): Linear(in_features=400, out_features=120, bias=True)
+  (linear2): Linear(in_features=120, out_features=84, bias=True)
+  (linear3): Linear(in_features=84, out_features=10, bias=True)
+  (relu1): ReLU()
+  (relu2): ReLU()
+  (relu3): ReLU()
+  (relu4): ReLU()
+  (pool): AvgPool2d(kernel_size=2, stride=2, padding=0)
+)
+-I: Evaluating Testing Accuracy...
+Accuracy Test:  93%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████          | 9344/10000 [00:00<00:00, 25395.96it/s]Test Error: 
+ Accuracy: 96.5%, Avg loss: 1.496859 
+
+Accuracy Test: 10112it [00:00, 23568.78it/s]                                                                                                                                                                       
+-I: elapsed: 0.429854 s
+is string
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): Loading config YAML
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): name is debug
+-D(yaml-parser): cmac_psum_bitwidth is 
+-D(yaml-parser): cacc_psum_bitwidth is @
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): max_batch_size is 1
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): cmac_atomic_c is 64
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): cmac_atomic_k is 64
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): mac pipelined is False
+-W(yaml-parser): input datbuf macro width doesn't match required
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): cbuf_datbuf_depth is 1024
+-W(yaml-parser): input wtbuf macro width doesn't match required
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): cbuf_wtbuf_depth is 512
+-W(yaml-parser): input cacc mem macro width doesn't match required
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): cacc_depth is 2048
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): sdp bs is True
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): sdp bn is True
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): sdp ew is False
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): sdp alu pipelined is False
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): primary_axi_wordsize is 512
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/nvdla/core/common/cpp/nv_config.cpp): primary_axi_latency is 1200
+-W(yaml-parser): rounding is FALSE
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/python_module/pyflare/nvdla/tpp/pytype_nvdla_alloc.tpp): allocating system memory...
+-D(/home/benjamin/Desktop/NVDLA_SlimNNs/EMBER/FLARE-demo/NVDLA-FLARE/src/python_module/pyflare/nvdla/tpp/pytype_nvdla_alloc.tpp): memory allocated
+terminate called after throwing an instance of 'std::bad_alloc'
+  what():  std::bad_alloc
+Aborted (core dumped)
+

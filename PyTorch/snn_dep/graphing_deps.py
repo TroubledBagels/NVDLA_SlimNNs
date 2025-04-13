@@ -95,12 +95,17 @@ def create_graphs(all_cor, all_conf, all_times, all_widths, all_thresholds, wml)
 
     # Create line graph for accuracies and avg confidence
     fig1, ax1 = plt.subplots()
-    ax1.plot(thresholds_str, all_accs, label="Accuracy")
+    ax1.plot(all_thresholds, all_accs, label="Accuracy")
     ax1.set_xlabel('Threshold')
     ax1.set_title('Accuracy Results')
 
     # Calculate width frequency for each threshold
-    temp_arr = [sorted(Counter(all_widths[i]).items()) for i in range(len(all_widths))]
+    temp_arr = []
+    for i in range(len(all_widths)):
+        c = Counter(all_widths[i])
+        full_counter = {k: c.get(k, 0) for k in wml}
+        temp_arr.append(sorted(full_counter.items()))
+
     width_labels = [str(k) for k in wml]
     width_freqs = [[v for _, v in temp_arr[i]] for i in range(len(temp_arr))]
 
@@ -142,19 +147,19 @@ def create_graphs(all_cor, all_conf, all_times, all_widths, all_thresholds, wml)
 
     # Create line graph for average time
     fig3, ax3 = plt.subplots()
-    ax3.plot(thresholds_str, avg_time)
+    ax3.plot(all_thresholds, avg_time)
     ax3.set_xlabel('Threshold')
     ax3.set_ylabel("Average Time (ms)")
     ax3.set_title('Average Time per Threshold')
 
 
     fig4, ax4 = plt.subplots()
-    ax4.plot(thresholds_str, mean_conf, label="Mean Confidence")
-    ax4.plot(thresholds_str, median_conf, label="Median Confidence")
-    ax4.plot(thresholds_str, q1_conf, label="Q1 Confidence")
-    ax4.plot(thresholds_str, q3_conf, label="Q3 Confidence")
-    ax4.plot(thresholds_str, max_conf, label="Max Confidence")
-    ax4.plot(thresholds_str, min_conf, label="Min Confidence")
+    ax4.plot(all_thresholds, mean_conf, label="Mean Confidence")
+    ax4.plot(all_thresholds, median_conf, label="Median Confidence")
+    ax4.plot(all_thresholds, q1_conf, label="Q1 Confidence")
+    ax4.plot(all_thresholds, q3_conf, label="Q3 Confidence")
+    ax4.plot(all_thresholds, max_conf, label="Max Confidence")
+    ax4.plot(all_thresholds, min_conf, label="Min Confidence")
     ax4.set_xlabel('Threshold')
     ax4.set_title('Confidence Results')
     ax4.legend()
@@ -196,15 +201,11 @@ def run_tests(model, dataloader, device, verbosity, threshold):
 
             while not done:
                 pred = model.forward_train(X)
-                # norm_pred = (pred / pred.sum())
-                # norm_pred = torch.norm(pred, p=1, dim=0)
-                # print(pred)
-                # print(norm_pred)
-                # time.sleep(10)
-                confidence = (torch.max(pred, 1)[0] - torch.topk(pred, 2)[0][:, 1]).item()
-                # print(pred)
-                # print(confidence)
-                # time.sleep(1)
+
+                pred_sm = torch.nn.functional.softmax(pred, dim=1)
+
+                confidence = (torch.max(pred_sm, 1)[0] - torch.topk(pred_sm, 2)[0][:, 1]).item()
+
                 if confidence < threshold:
                     if wml.index(wm) == len(wml) - 1:
                         done = True

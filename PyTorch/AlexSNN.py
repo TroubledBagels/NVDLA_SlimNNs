@@ -65,9 +65,7 @@ class AlexSNN(nn.Module):
             softmax_x = nn.Softmax(dim=1)(x)
 
             confidence = torch.max(softmax_x, 1)[0] - torch.topk(softmax_x, 2)[0][:, 1].item()
-            if confidence > confidence_threshold:
-                break
-            elif width_mult == 1.0:
+            if confidence > confidence_threshold or width_mult == 1.0:
                 break
             else:
                 width_mult = self.width_mult_list[self.width_mult_list.index(width_mult) + 1]

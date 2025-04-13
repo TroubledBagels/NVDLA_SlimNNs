@@ -26,41 +26,52 @@ class SlimmableConv2d(nn.Conv2d):
         self.in_channels_list = in_channels_list
         self.out_channels_list = out_channels_list
         self.groups_list = groups_list
+
         if self.groups_list == [1]:
             self.groups_list = [1 for _ in range(len(in_channels_list))]
+
         self.width_mult_list = wml
         self.width_mult = max(self.width_mult_list)
 
     def forward(self, input):
         idx = self.width_mult_list.index(self.width_mult)
+
         self.in_channels = self.in_channels_list[idx]
         self.out_channels = self.out_channels_list[idx]
         self.groups = self.groups_list[idx]
+
         weight = self.weight[:self.out_channels, :self.in_channels, :, :]
+
         if self.bias is not None:
             bias = self.bias[:self.out_channels]
         else:
             bias = self.bias
+
         y = nn.functional.conv2d(input, weight, bias, self.stride, self.padding, self.dilation, self.groups)
         return y
 
 class SlimmableLinear(nn.Linear):
     def __init__(self, in_features_list, out_features_list, wml, bias=True):
         super(SlimmableLinear, self).__init__(max(in_features_list), max(out_features_list), bias=bias)
+
         self.in_features_list = in_features_list
         self.out_features_list = out_features_list
+
         self.width_mult_list = wml
         self.width_mult = max(self.width_mult_list)
 
     def forward(self, input):
         idx = self.width_mult_list.index(self.width_mult)
+
         self.in_features = self.in_features_list[idx]
         self.out_features = self.out_features_list[idx]
+
         weight = self.weight[:self.out_features, :self.in_features]
         if self.bias is not None:
             bias = self.bias[:self.out_features]
         else:
             bias = self.bias
+
         y = nn.functional.linear(input, weight, bias)
         return y
 
