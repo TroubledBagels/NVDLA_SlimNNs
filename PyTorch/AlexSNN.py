@@ -63,8 +63,8 @@ class AlexSNN(nn.Module):
             x = self.fc3(x)
 
             softmax_x = nn.Softmax(dim=1)(x)
-
             confidence = torch.max(softmax_x, 1)[0] - torch.topk(softmax_x, 2)[0][:, 1].item()
+
             if confidence > confidence_threshold or width_mult == 1.0:
                 break
             else:

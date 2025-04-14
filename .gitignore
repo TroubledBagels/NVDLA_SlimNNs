@@ -3,7 +3,6 @@
 .idea/
 
 Compilation/onnx_models
-
 Compilation/nvdla_models
 
 EMBER/FLARE-demo
@@ -11,3 +10,6 @@ EMBER/FLARE-HDL
 
 PyTorch/snn_models
 PyTorch/data
+
+Runtime/runtime_outputs
+
